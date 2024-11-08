@@ -1,6 +1,6 @@
 package org.stuart.recipe.entities;
 
-import javax.persistence.*;
+import jakarta.persistence.*;
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Size;
@@ -10,7 +10,7 @@ import javax.validation.constraints.Size;
 public class User {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @GeneratedValue
     private Long id;
 
     @NotBlank(message = "Username is required")
@@ -27,9 +27,9 @@ public class User {
     @Column(unique = true, nullable = false)
     private String email;
 
-    // Optional fields for additional user information
-    private String bio;
-    private String profilePictureUrl;
+    // TODO: out of scope, additional user data
+//    private String bio;
+//    private String profilePictureUrl;
 
     // Constructors
     public User() {
@@ -74,20 +74,20 @@ public class User {
         this.email = email;
     }
 
-    public String getBio() {
-        return bio;
-    }
-
-    public void setBio(String bio) {
-        this.bio = bio;
-    }
-
-    public String getProfilePictureUrl() {
-        return profilePictureUrl;
-    }
-
-    public void setProfilePictureUrl(String profilePictureUrl) {
-        this.profilePictureUrl = profilePictureUrl;
-    }
+//    public String getBio() {
+//        return bio;
+//    }
+//
+//    public void setBio(String bio) {
+//        this.bio = bio;
+//    }
+//
+//    public String getProfilePictureUrl() {
+//        return profilePictureUrl;
+//    }
+//
+//    public void setProfilePictureUrl(String profilePictureUrl) {
+//        this.profilePictureUrl = profilePictureUrl;
+//    }
 }
 

@@ -1,6 +1,7 @@
 package org.stuart.recipe.entities;
 
-import javax.persistence.*;
+
+import jakarta.persistence.*;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Size;
 import java.util.List;
@@ -10,7 +11,7 @@ import java.util.List;
 public class Recipe {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @GeneratedValue
     private Long id;
 
     @NotBlank(message = "Recipe name is required")
@@ -32,7 +33,7 @@ public class Recipe {
     // Optional fields for additional data
     private String imageUrl;
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     @JoinColumn(name = "user_id", nullable = false)
     private User submittedBy;
 

@@ -1,6 +1,6 @@
 package org.stuart.recipe.entities;
 
-import javax.persistence.*;
+import jakarta.persistence.*;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 
@@ -9,7 +9,7 @@ import javax.validation.constraints.NotNull;
 public class Location {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @GeneratedValue
     private Long id;
 
     @NotBlank(message = "City or region name is required")
@@ -21,7 +21,7 @@ public class Location {
     @NotNull(message = "Longitude is required")
     private Double longitude;
 
-    @OneToOne(mappedBy = "location", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    @OneToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     private Recipe recipe;
 
     // Constructors
