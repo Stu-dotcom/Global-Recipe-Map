@@ -20,30 +20,30 @@ public class RecipeController {
 
     // Create a new recipe
     @PostMapping
-    public ResponseEntity<Recipe> createRecipe(@RequestBody RecipeDTO recipe) {
-        Recipe savedRecipe = recipeService.saveRecipe(recipe);
+    public ResponseEntity<RecipeDTO> createRecipe(@RequestBody RecipeDTO recipe) {
+        RecipeDTO savedRecipe = recipeService.saveRecipe(recipe);
         return new ResponseEntity<>(savedRecipe, HttpStatus.CREATED);
     }
 
     // Get a recipe by ID
     @GetMapping("/{id}")
-    public ResponseEntity<Recipe> getRecipeById(@PathVariable Long id) {
-        Recipe recipe = recipeService.getRecipeById(id);
+    public ResponseEntity<RecipeDTO> getRecipeById(@PathVariable Long id) {
+        RecipeDTO recipe = recipeService.getRecipeById(id);
         return recipe != null ? ResponseEntity.ok(recipe) : ResponseEntity.notFound().build();
     }
 
     // Get all recipes
     @GetMapping
-    public ResponseEntity<List<Recipe>> getAllRecipes() {
-        Iterable<Recipe> recipes = recipeService.getAllRecipes();
+    public ResponseEntity<List<RecipeDTO>> getAllRecipes() {
+        Iterable<RecipeDTO> recipes = recipeService.getAllRecipes();
         //Convert iterable to list for response
         return ResponseEntity.ok(StreamSupport.stream(recipes.spliterator(), false).toList());
     }
 
     // Update an existing recipe by ID
     @PutMapping("/{id}")
-    public ResponseEntity<Recipe> updateRecipe(@PathVariable Long id, @RequestBody Recipe recipeDetails) {
-        Recipe updatedRecipe = recipeService.updateRecipe(id, recipeDetails);
+    public ResponseEntity<RecipeDTO> updateRecipe(@PathVariable Long id, @RequestBody RecipeDTO recipeDetails) {
+        RecipeDTO updatedRecipe = recipeService.updateRecipe(id, recipeDetails);
         return updatedRecipe != null ? ResponseEntity.ok(updatedRecipe) : ResponseEntity.notFound().build();
     }
 

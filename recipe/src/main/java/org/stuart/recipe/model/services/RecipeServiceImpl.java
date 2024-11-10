@@ -8,8 +8,9 @@ import org.stuart.recipe.model.entities.User;
 import org.stuart.recipe.model.repositories.RecipeRepository;
 import org.stuart.recipe.model.repositories.UserRepository;
 
-import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
+import java.util.stream.StreamSupport;
 
 @Service
 public class RecipeServiceImpl implements RecipeService {
@@ -22,7 +23,7 @@ public class RecipeServiceImpl implements RecipeService {
 
     // Save a new recipe
     @Override
-    public Recipe saveRecipe(RecipeDTO recipeDTO) {
+    public RecipeDTO saveRecipe(RecipeDTO recipeDTO) {
         Optional<User> userOptional = userRepository.findById(recipeDTO.getUserId());
 
         if (userOptional.isPresent()) {
@@ -34,41 +35,54 @@ public class RecipeServiceImpl implements RecipeService {
             recipe.setLocation(recipeDTO.getLocation());
             recipe.setSubmittedBy(user);
 
-            return recipeRepository.save(recipe);
+            return convertToRecipeDTO(recipeRepository.save(recipe));
         } else {
             throw new IllegalArgumentException("User with ID " + recipeDTO.getUserId() + " not found");
         }
     }
 
-
     // Retrieve a recipe by its ID
     @Override
-    public Recipe getRecipeById(Long id) {
+    public RecipeDTO getRecipeById(Long id) {
         Optional<Recipe> recipe = recipeRepository.findById(id);
-        return recipe.orElse(null);
+        RecipeDTO recipeDTO = null;
+        if (recipe.isPresent()) {
+            recipeDTO = convertToRecipeDTO(recipe.get());
+        }
+        return recipeDTO;
     }
 
-    // Get a list of all recipes
+    // Get a list of all recipes as DTOs
     @Override
-    public Iterable<Recipe> getAllRecipes() {
-        return recipeRepository.findAll();
+    public Iterable<RecipeDTO> getAllRecipes() {
+        return StreamSupport.stream(recipeRepository.findAll().spliterator(), false)
+                .map(this::convertToRecipeDTO)
+                .collect(Collectors.toList());
     }
 
     // Update an existing recipe by ID
     @Override
-    public Recipe updateRecipe(Long id, Recipe recipeDetails) {
+    public RecipeDTO updateRecipe(Long id, RecipeDTO recipeDTO) {
         Optional<Recipe> recipeOptional = recipeRepository.findById(id);
 
         if (recipeOptional.isPresent()) {
             Recipe recipe = recipeOptional.get();
-            recipe.setName(recipeDetails.getName());
-            recipe.setDescription(recipeDetails.getDescription());
-            recipe.setIngredients(recipeDetails.getIngredients());
-            recipe.setLocation(recipeDetails.getLocation());
-            return recipeRepository.save(recipe);
+            Optional<User> userOptional = userRepository.findById(recipeDTO.getUserId());
+
+            if (userOptional.isPresent()) {
+                User user = userOptional.get();
+                recipe.setName(recipeDTO.getName());
+                recipe.setDescription(recipeDTO.getDescription());
+                recipe.setIngredients(recipeDTO.getIngredients());
+                recipe.setLocation(recipeDTO.getLocation());
+                recipe.setSubmittedBy(user);
+
+                return convertToRecipeDTO(recipeRepository.save(recipe));
+            } else {
+                throw new IllegalArgumentException("User with ID " + recipeDTO.getUserId() + " not found");
+            }
         } else {
-            //TODO: throw exception for better error handling
-            return null;
+            throw new IllegalArgumentException("Recipe with ID " + id + " not found");
         }
     }
 
@@ -80,5 +94,16 @@ public class RecipeServiceImpl implements RecipeService {
             return true;
         }
         return false;
+    }
+
+    // Convert Recipe object to RecipeDTO
+    private RecipeDTO convertToRecipeDTO(Recipe recipe) {
+        RecipeDTO dto = new RecipeDTO();
+        dto.setName(recipe.getName());
+        dto.setDescription(recipe.getDescription());
+        dto.setIngredients(recipe.getIngredients());
+        dto.setLocation(recipe.getLocation());
+        dto.setUserId(recipe.getSubmittedBy().getId());
+        return dto;
     }
 }

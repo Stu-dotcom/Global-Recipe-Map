@@ -4,10 +4,10 @@ import org.stuart.recipe.model.dto.RecipeDTO;
 import org.stuart.recipe.model.entities.Recipe;
 
 public interface RecipeService {
-    Recipe saveRecipe(RecipeDTO recipe);
-    Recipe getRecipeById(Long id);
-    Iterable<Recipe> getAllRecipes();
-    Recipe updateRecipe(Long id, Recipe recipeDetails);
+    RecipeDTO saveRecipe(RecipeDTO recipe);
+    RecipeDTO getRecipeById(Long id);
+    Iterable<RecipeDTO> getAllRecipes();
+    RecipeDTO updateRecipe(Long id, RecipeDTO recipeDetails);
     boolean deleteRecipe(Long id);
 }
 
