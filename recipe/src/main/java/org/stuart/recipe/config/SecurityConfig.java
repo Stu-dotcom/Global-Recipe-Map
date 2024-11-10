@@ -1,13 +1,12 @@
-package org.stuart.recipe;
+package org.stuart.recipe.config;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
-import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.web.SecurityFilterChain;
+import org.springframework.security.web.access.AccessDeniedHandlerImpl;
 
 @Configuration
-@EnableWebSecurity
 public class SecurityConfig {
 
     @Bean
@@ -15,6 +14,7 @@ public class SecurityConfig {
         http
                 .authorizeHttpRequests(authorize -> authorize
                         .requestMatchers("/h2-console/**").permitAll()  // Allow access to H2 console
+                        .requestMatchers("/api/**").permitAll()         // Allow access to all API endpoints
                         .anyRequest().authenticated()
                 )
                 .csrf(csrf -> csrf.disable())  // Disable CSRF for H2 console
@@ -25,6 +25,3 @@ public class SecurityConfig {
         return http.build();
     }
 }
-
-
-

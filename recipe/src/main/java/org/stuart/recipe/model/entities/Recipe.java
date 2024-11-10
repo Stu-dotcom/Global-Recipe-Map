@@ -1,13 +1,16 @@
-package org.stuart.recipe.entities;
+package org.stuart.recipe.model.entities;
 
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import jakarta.persistence.*;
+
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Size;
 import java.util.List;
 
 @Entity
 @Table(name = "recipes")
+@JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
 public class Recipe {
 
     @Id
@@ -28,12 +31,12 @@ public class Recipe {
     private List<String> ingredients;
 
     @NotBlank(message = "Location is required")
-    private String location;  // Store as a string (e.g., city/country name) or use lat/lon coordinates for more precision
+    private String location;  // Store as a string (e.g., city/country name)
 
-    // Optional fields for additional data
+    //Store image url to display recipe (strech goal)
     private String imageUrl;
 
-    @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id", nullable = false)
     private User submittedBy;
 

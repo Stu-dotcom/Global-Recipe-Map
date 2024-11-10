@@ -1,4 +1,4 @@
-package org.stuart.recipe.entities;
+package org.stuart.recipe.model.entities;
 
 import jakarta.persistence.*;
 import javax.validation.constraints.Email;
