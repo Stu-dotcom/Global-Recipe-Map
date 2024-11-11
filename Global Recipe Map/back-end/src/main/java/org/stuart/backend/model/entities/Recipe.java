@@ -1,10 +1,9 @@
 package org.stuart.backend.model.entities;
 
-
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import jakarta.persistence.*;
-
 import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 import java.util.List;
 
@@ -30,25 +29,32 @@ public class Recipe {
     @Column(name = "ingredient")
     private List<String> ingredients;
 
-    @NotBlank(message = "Location is required")
-    private String location;  // Store as a string (e.g., city/country name)
+    @NotBlank(message = "Region name is required")
+    private String regionName; // city, state, or region name
 
-    //Store image url to display recipe (strech goal)
+    @NotNull(message = "Latitude is required")
+    private Double latitude;
+
+    @NotNull(message = "Longitude is required")
+    private Double longitude;
+
     private String imageUrl;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id", nullable = false)
     private User submittedBy;
 
-    // Constructors
-    public Recipe() {
-    }
+    // Default constructor
+    public Recipe() {}
 
-    public Recipe(String name, String description, List<String> ingredients, String location, User submittedBy) {
+    // Parameterized constructor
+    public Recipe(String name, String description, List<String> ingredients,
+                  Double latitude, Double longitude, User submittedBy) {
         this.name = name;
         this.description = description;
         this.ingredients = ingredients;
-        this.location = location;
+        this.latitude = latitude;
+        this.longitude = longitude;
         this.submittedBy = submittedBy;
     }
 
@@ -85,12 +91,28 @@ public class Recipe {
         this.ingredients = ingredients;
     }
 
-    public String getLocation() {
-        return location;
+    public String getRegionName() {
+        return regionName;
     }
 
-    public void setLocation(String location) {
-        this.location = location;
+    public void setRegionName(String regionName) {
+        this.regionName = regionName;
+    }
+
+    public Double getLatitude() {
+        return latitude;
+    }
+
+    public void setLatitude(Double latitude) {
+        this.latitude = latitude;
+    }
+
+    public Double getLongitude() {
+        return longitude;
+    }
+
+    public void setLongitude(Double longitude) {
+        this.longitude = longitude;
     }
 
     public String getImageUrl() {
@@ -109,4 +131,3 @@ public class Recipe {
         this.submittedBy = submittedBy;
     }
 }
-

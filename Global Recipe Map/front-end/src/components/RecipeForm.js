@@ -7,7 +7,8 @@ const RecipeForm = ({ onSubmit }) => {
         name: '',
         description: '',
         ingredients: '',
-        location: '',
+        latitude: '',
+        longitude: '',
         userId: ''
     });
 
@@ -18,15 +19,13 @@ const RecipeForm = ({ onSubmit }) => {
 
     const handleSubmit = (e) => {
         e.preventDefault();
-
-        // Convert comma-separated ingredients to an array
         const recipeWithArrayIngredients = {
             ...formData,
-            ingredients: formData.ingredients.split(',').map(ingredient => ingredient.trim()), // Split by comma and trim spaces
+            ingredients: formData.ingredients.split(',').map(ingredient => ingredient.trim()),
         };
 
         onSubmit(recipeWithArrayIngredients);
-        setFormData({ name: '', description: '', ingredients: '', location: '', userId: '' });
+        setFormData({ name: '', description: '', ingredients: '', latitude: '', longitude: '', userId: '' });
         setIsVisible(false);
     };
 
@@ -53,8 +52,12 @@ const RecipeForm = ({ onSubmit }) => {
                                 <input type="text" name="ingredients" value={formData.ingredients} onChange={handleChange} required />
                             </label>
                             <label>
-                                Location:
-                                <input type="text" name="location" value={formData.location} onChange={handleChange} required />
+                                Latitude:
+                                <input type="number" name="latitude" value={formData.latitude} onChange={handleChange} required />
+                            </label>
+                            <label>
+                                Longitude:
+                                <input type="number" name="longitude" value={formData.longitude} onChange={handleChange} required />
                             </label>
                             <label>
                                 User ID:

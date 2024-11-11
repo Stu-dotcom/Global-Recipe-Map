@@ -6,7 +6,9 @@ public class RecipeDTO {
     private String name;
     private String description;
     private List<String> ingredients;
-    private String location;
+    private double latitude;
+    private double longitude;
+    private String regionName;
     private Long userId;
 
     //getters and setters
@@ -26,12 +28,12 @@ public class RecipeDTO {
         this.name = name;
     }
 
-    public String getLocation() {
-        return location;
+    public String getRegionName() {
+        return regionName;
     }
 
-    public void setLocation(String location) {
-        this.location = location;
+    public void setRegionName(String regionName) {
+        this.regionName = regionName;
     }
 
     public List<String> getIngredients() {
@@ -49,5 +51,14 @@ public class RecipeDTO {
     public void setUserId(Long userId) {
         this.userId = userId;
     }
+
+    public double getLongitude() { return longitude; }
+
+    public void setLongitude(double longitude) {this.longitude = longitude;}
+
+    public double getLatitude() {return latitude;}
+
+    public void setLatitude(double latitude) {this.latitude = latitude;}
+
 }
 

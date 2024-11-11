@@ -27,12 +27,14 @@ public class RecipeServiceImpl implements RecipeService {
         Optional<User> userOptional = userRepository.findById(recipeDTO.getUserId());
 
         if (userOptional.isPresent()) {
+            //TODO create method for duplicate code
             User user = userOptional.get();
             Recipe recipe = new Recipe();
             recipe.setName(recipeDTO.getName());
             recipe.setDescription(recipeDTO.getDescription());
             recipe.setIngredients(recipeDTO.getIngredients());
-            recipe.setLocation(recipeDTO.getLocation());
+            recipe.setLatitude(recipeDTO.getLatitude());
+            recipe.setLongitude(recipeDTO.getLongitude());
             recipe.setSubmittedBy(user);
 
             System.out.println("Recipe saved: " + recipe.getName());
@@ -71,11 +73,13 @@ public class RecipeServiceImpl implements RecipeService {
             Optional<User> userOptional = userRepository.findById(recipeDTO.getUserId());
 
             if (userOptional.isPresent()) {
+                //TODO create method for duplicate code
                 User user = userOptional.get();
                 recipe.setName(recipeDTO.getName());
                 recipe.setDescription(recipeDTO.getDescription());
                 recipe.setIngredients(recipeDTO.getIngredients());
-                recipe.setLocation(recipeDTO.getLocation());
+                recipe.setLatitude(recipeDTO.getLatitude());
+                recipe.setLongitude(recipeDTO.getLongitude());
                 recipe.setSubmittedBy(user);
 
                 return convertToRecipeDTO(recipeRepository.save(recipe));
@@ -103,7 +107,8 @@ public class RecipeServiceImpl implements RecipeService {
         dto.setName(recipe.getName());
         dto.setDescription(recipe.getDescription());
         dto.setIngredients(recipe.getIngredients());
-        dto.setLocation(recipe.getLocation());
+        dto.setLatitude(recipe.getLatitude());
+        dto.setLongitude(recipe.getLongitude());
         dto.setUserId(recipe.getSubmittedBy().getId());
         return dto;
     }

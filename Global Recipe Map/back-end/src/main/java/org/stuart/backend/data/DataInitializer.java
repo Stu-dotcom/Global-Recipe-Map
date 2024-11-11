@@ -37,9 +37,16 @@ public class DataInitializer implements CommandLineRunner {
         List<String> curryIngredients = Arrays.asList("Chicken", "Curry Powder", "Coconut Milk", "Rice");
         List<String> cheeseBurgerIngredients = Arrays.asList("Bun", "Meat Patty", "Cheese Slice");
 
-        Recipe recipe1 = new Recipe("Pasta Bolognese", "Classic Italian pasta dish", pastaIngredients, "Glasgow", user1);
-        Recipe recipe2 = new Recipe("Chicken Curry", "Spicy and delicious", curryIngredients, "Glasgow", user2);
-        Recipe recipe3 = new Recipe("Cheese Burger", "Basic cheeseburger", cheeseBurgerIngredients, "Glasgow", user1);
+        //Glasgow long and lat
+        Double glasgowLat = 55.8617;
+        Double glasgowLong = 4.2583;
+        //Edinburgh long and lat
+        Double edinburghLat = 55.9533;
+        Double edinburghLong = 3.1883;
+
+        Recipe recipe1 = new Recipe("Pasta Bolognese", "Classic Italian pasta dish", pastaIngredients, glasgowLat, glasgowLong, user1);
+        Recipe recipe2 = new Recipe("Chicken Curry", "Spicy and delicious", curryIngredients, glasgowLat, glasgowLong, user2);
+        Recipe recipe3 = new Recipe("Cheese Burger", "Basic cheeseburger", cheeseBurgerIngredients, edinburghLat, edinburghLong, user1);
 
 
         recipeRepository.saveAll(Arrays.asList(recipe1, recipe2, recipe3));
