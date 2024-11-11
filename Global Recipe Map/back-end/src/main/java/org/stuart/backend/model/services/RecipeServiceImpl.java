@@ -35,6 +35,7 @@ public class RecipeServiceImpl implements RecipeService {
             recipe.setLocation(recipeDTO.getLocation());
             recipe.setSubmittedBy(user);
 
+            System.out.println("Recipe saved: " + recipe.getName());
             return convertToRecipeDTO(recipeRepository.save(recipe));
         } else {
             throw new IllegalArgumentException("User with ID " + recipeDTO.getUserId() + " not found");
