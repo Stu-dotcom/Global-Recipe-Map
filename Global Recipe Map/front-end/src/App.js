@@ -1,7 +1,6 @@
 import React from 'react';
 import './App.css';
 import MapComponent from './components/MapComponent';
-import RecipeForm from './components/RecipeForm';
 
 function App() {
     const handleRecipeSubmit = async (recipe) => {
@@ -32,7 +31,6 @@ function App() {
         <div className="App">
             <h1>Leaflet Map with OpenStreetMap Tiles</h1>
             <MapComponent />
-            <RecipeForm onSubmit={handleRecipeSubmit} />
         </div>
     );
 }

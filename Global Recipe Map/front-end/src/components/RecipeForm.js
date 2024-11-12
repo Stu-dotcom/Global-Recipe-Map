@@ -1,37 +1,71 @@
 import React, { useState } from 'react';
 import './RecipeForm.css';
 
-const RecipeForm = ({ onSubmit }) => {
+const RecipeForm = ({ latitude, longitude, onRecipeSubmit }) => {
     const [isVisible, setIsVisible] = useState(false);
     const [formData, setFormData] = useState({
         name: '',
         description: '',
         ingredients: '',
-        latitude: '',
-        longitude: '',
         userId: ''
     });
 
-    const handleChange = (e) => {
-        const { name, value } = e.target;
-        setFormData({ ...formData, [name]: value });
+    const openForm = () => {
+        setIsVisible(true);
+        console.log("Form opened with latitude:", latitude, "and longitude:", longitude);
     };
 
-    const handleSubmit = (e) => {
+    const handleChange = (e) => {
+        const { name, value } = e.target;
+        setFormData((prevData) => ({
+            ...prevData,
+            [name]: value
+        }));
+    };
+
+    const handleSubmit = async (e) => {
         e.preventDefault();
-        const recipeWithArrayIngredients = {
+
+        const recipeData = {
             ...formData,
-            ingredients: formData.ingredients.split(',').map(ingredient => ingredient.trim()),
+            ingredients: formData.ingredients.split(',').map((ingredient) => ingredient.trim()),
+            latitude,
+            longitude
         };
 
-        onSubmit(recipeWithArrayIngredients);
-        setFormData({ name: '', description: '', ingredients: '', latitude: '', longitude: '', userId: '' });
+        try {
+            const response = await fetch('http://localhost:8080/api/recipes', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify(recipeData),
+            });
+
+            if (response.ok) {
+                const data = await response.json();
+                console.log('Recipe submitted successfully:', data);
+                alert('Recipe submitted successfully!');
+
+                // Trigger the callback to refresh recipes in MapComponent
+                onRecipeSubmit();
+            } else {
+                console.error('Failed to submit recipe:', response.statusText);
+                alert('Failed to submit recipe. Please try again.');
+            }
+        } catch (error) {
+            console.error('Error submitting recipe:', error);
+            alert('An error occurred while submitting the recipe.');
+        }
+
+        // Reset the form and close it
+        setFormData({ name: '', description: '', ingredients: '', userId: '' });
         setIsVisible(false);
     };
 
     return (
         <>
-            <button onClick={() => setIsVisible(true)} className="open-form-button">Add Recipe</button>
+            <button onClick={openForm} className="open-form-button">Add Recipe</button>
 
             {isVisible && (
                 <div className="form-overlay">
@@ -53,11 +87,11 @@ const RecipeForm = ({ onSubmit }) => {
                             </label>
                             <label>
                                 Latitude:
-                                <input type="number" name="latitude" value={formData.latitude} onChange={handleChange} required />
+                                <input type="text" value={latitude || ''} readOnly className="display-only" />
                             </label>
                             <label>
                                 Longitude:
-                                <input type="number" name="longitude" value={formData.longitude} onChange={handleChange} required />
+                                <input type="text" value={longitude || ''} readOnly className="display-only" />
                             </label>
                             <label>
                                 User ID:
