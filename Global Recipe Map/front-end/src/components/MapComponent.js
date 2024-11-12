@@ -4,6 +4,7 @@ import 'leaflet/dist/leaflet.css';
 import L from 'leaflet';
 import RecipeForm from './RecipeForm';
 
+// Set up an icon for recipe markers
 const recipeMarkerIcon = new L.Icon({
     iconUrl: 'https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.7.1/images/marker-icon.png',
     iconSize: [25, 41],
@@ -24,18 +25,22 @@ const plusMarkerIcon = new L.Icon({
     popupAnchor: [0, -32],
 });
 
+const bounds = [
+    [-85.05112878, -180], // Southwest corner
+    [85.05112878, 180]    // Northeast corner
+];
+
 const MapComponent = () => {
     const [recipes, setRecipes] = useState([]); // Store recipes from API
     const [formCoordinates, setFormCoordinates] = useState({ latitude: null, longitude: null }); // Coordinates for form
 
-    // Function to fetch recipes from the API
     const fetchRecipes = async () => {
         try {
             const response = await fetch('http://localhost:8080/api/recipes');
             if (response.ok) {
                 const data = await response.json();
-                setRecipes(data); // Store recipes in state
-                setFormCoordinates({ latitude: null, longitude: null }); // Clear coordinates to remove the plus marker
+                setRecipes(data);
+                setFormCoordinates({ latitude: null, longitude: null });
             } else {
                 console.error('Failed to fetch recipes:', response.statusText);
             }
@@ -44,12 +49,10 @@ const MapComponent = () => {
         }
     };
 
-    // Fetch recipes on component mount
     useEffect(() => {
         fetchRecipes();
     }, []);
 
-    // Custom component to handle map click events and update form coordinates
     const MapClickHandler = () => {
         useMapEvents({
             click: (e) => {
@@ -62,16 +65,22 @@ const MapComponent = () => {
 
     return (
         <div style={{ position: 'relative', height: '100vh' }}>
-            <MapContainer center={[51.505, -0.09]} zoom={13} style={{ height: '100%', width: '100%' }}>
+            <MapContainer
+                center={[51.505, -0.09]}
+                zoom={13}
+                minZoom={2} // Prevent zooming out too far
+                maxBounds={bounds} // Limit map bounds to one world
+                maxBoundsViscosity={1.0} // Prevent panning beyond bounds
+                worldCopyJump={false} // Prevent map from showing multiple globes
+                style={{ height: '100%', width: '100%' }}
+            >
                 <TileLayer
                     url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
                     attribution="&copy; <a href='https://www.openstreetmap.org/copyright'>OpenStreetMap</a> contributors"
                 />
 
-                {/* Handle map clicks for updating form coordinates */}
                 <MapClickHandler />
 
-                {/* Display markers for each recipe */}
                 {recipes.map((recipe) => (
                     <Marker
                         key={recipe.id}
@@ -86,7 +95,6 @@ const MapComponent = () => {
                     </Marker>
                 ))}
 
-                {/* Display a plus marker to show where the next recipe will be added */}
                 {formCoordinates.latitude && formCoordinates.longitude && (
                     <Marker
                         position={[formCoordinates.latitude, formCoordinates.longitude]}
@@ -97,12 +105,11 @@ const MapComponent = () => {
                 )}
             </MapContainer>
 
-            {/* Pass the form coordinates and refresh function to RecipeForm */}
             <div style={{ position: 'absolute', top: 10, left: 10, zIndex: 1000 }}>
                 <RecipeForm
                     latitude={formCoordinates.latitude}
                     longitude={formCoordinates.longitude}
-                    onRecipeSubmit={fetchRecipes} // Trigger a refresh after submission
+                    onRecipeSubmit={fetchRecipes}
                 />
             </div>
         </div>
