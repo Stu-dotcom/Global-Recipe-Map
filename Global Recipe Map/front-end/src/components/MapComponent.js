@@ -4,6 +4,8 @@ import 'leaflet/dist/leaflet.css';
 import L from 'leaflet';
 import RecipeForm from './RecipeForm';
 
+const apiUrl = process.env.REACT_APP_API_BASE_URL;
+
 // Set up an icon for recipe markers
 const recipeMarkerIcon = new L.Icon({
     iconUrl: 'https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.7.1/images/marker-icon.png',
@@ -36,7 +38,7 @@ const MapComponent = () => {
 
     const fetchRecipes = async () => {
         try {
-            const response = await fetch('http://localhost:8080/api/recipes');
+            const response = await fetch('${apiUrl}/api/recipes');
             if (response.ok) {
                 const data = await response.json();
                 setRecipes(data);

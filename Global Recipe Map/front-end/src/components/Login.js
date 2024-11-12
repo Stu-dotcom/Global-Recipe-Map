@@ -6,6 +6,7 @@ const Login = ({ onLoginSuccess }) => {
     const [username, setUsername] = useState('');
     const [password, setPassword] = useState('');
     const [error, setError] = useState(null);
+    const apiUrl = process.env.REACT_APP_API_BASE_URL;
 
     // Toggle between login and sign-up mode
     const toggleMode = () => {
@@ -17,8 +18,8 @@ const Login = ({ onLoginSuccess }) => {
         e.preventDefault();
 
         const url = isLoginMode
-            ? 'http://localhost:8080/api/login'
-            : 'http://localhost:8080/api/signup';
+            ? '${apiUrl}/api/login'
+            : '${apiUrl}/api/signup';
 
         try {
             const response = await fetch(url, {
