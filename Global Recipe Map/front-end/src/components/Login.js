@@ -18,8 +18,8 @@ const Login = ({ onLoginSuccess }) => {
         e.preventDefault();
 
         const url = isLoginMode
-            ? '${apiUrl}/api/login'
-            : '${apiUrl}/api/signup';
+            ? `${apiUrl}/api/login`
+            : `${apiUrl}/api/signup`;
 
         try {
             const response = await fetch(url, {

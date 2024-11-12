@@ -38,7 +38,7 @@ const MapComponent = () => {
 
     const fetchRecipes = async () => {
         try {
-            const response = await fetch('${apiUrl}/api/recipes');
+            const response = await fetch(`${apiUrl}/api/recipes`);
             if (response.ok) {
                 const data = await response.json();
                 setRecipes(data);

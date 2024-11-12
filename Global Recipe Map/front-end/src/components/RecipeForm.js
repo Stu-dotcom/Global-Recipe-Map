@@ -34,7 +34,7 @@ const RecipeForm = ({ latitude, longitude, onRecipeSubmit }) => {
         };
 
         try {
-            const response = await fetch('${apiUrl}/api/recipes', {
+            const response = await fetch(`${apiUrl}/api/recipes`, {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
