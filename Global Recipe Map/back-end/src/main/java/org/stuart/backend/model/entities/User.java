@@ -22,9 +22,6 @@ public class User {
     @Size(min = 8, message = "Password must be at least 8 characters")
     private String password;
 
-    @NotBlank(message = "Email is required")
-    @Email(message = "Email should be valid")
-    @Column(unique = true, nullable = false)
     private String email;
 
     // TODO: out of scope, additional user data
@@ -39,6 +36,11 @@ public class User {
         this.username = username;
         this.password = password;
         this.email = email;
+    }
+
+    public User(String username, String password) {
+        this.username = username;
+        this.password = password;
     }
 
     // Getters and Setters

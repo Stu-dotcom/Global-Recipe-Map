@@ -2,6 +2,7 @@ package org.stuart.backend.model.services;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.stuart.backend.model.dto.UserDTO;
 import org.stuart.backend.model.entities.User;
 import org.stuart.backend.model.repositories.UserRepository;
 
@@ -15,15 +16,30 @@ public class UserServiceImpl implements UserService {
 
     // Save a new user
     @Override
-    public User saveUser(User user) {
-        return userRepository.save(user);
+    public Boolean registerUser(UserDTO user) {
+        if (userRepository.findByUsername(user.getUsername()) != null) {
+            return false; // Username is already taken
+        }
+
+        // Encrypt the password and save the user
+        User newUser = new User();
+        newUser.setUsername(user.getUsername());
+        newUser.setPassword(user.getPassword());
+        userRepository.save(newUser);
+        return true;
     }
 
-    // Retrieve a user by their ID
-    @Override
-    public User getUserById(Long id) {
-        Optional<User> user = userRepository.findById(id);
-        return user.orElse(null);
+    // Authenticate user
+    public Optional<String> authenticateUser(UserDTO user) {
+        User checkingUser = userRepository.findByUsername(user.getUsername());
+
+        // Check if user exists and password matches
+        if (checkingUser != null && checkingUser.getPassword().equals(user.getPassword())) {
+            // TODO: generate real tokens and encode passwords
+            return Optional.of("mock-token-for-user-" + user.getUsername());
+        } else {
+            return Optional.empty();
+        }
     }
 
     // Get a list of all users

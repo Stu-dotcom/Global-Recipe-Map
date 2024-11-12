@@ -25,6 +25,7 @@ public class DataInitializer implements CommandLineRunner {
 
     @Override
     public void run(String... args) throws Exception {
+        System.out.println("Initializing data...");
         // Sample users
         User user1 = userRepository.save(new User("john_doe", "password123", "john@example.com"));
         User user2 = userRepository.save(new User("jane_doe", "password456", "jane@example.com"));
@@ -39,10 +40,10 @@ public class DataInitializer implements CommandLineRunner {
 
         //Glasgow long and lat
         Double glasgowLat = 55.8617;
-        Double glasgowLong = 4.2583;
+        Double glasgowLong = -4.2583;
         //Edinburgh long and lat
         Double edinburghLat = 55.9533;
-        Double edinburghLong = 3.1883;
+        Double edinburghLong = -3.1883;
 
         Recipe recipe1 = new Recipe("Pasta Bolognese", "Classic Italian pasta dish", pastaIngredients, glasgowLat, glasgowLong, user1);
         Recipe recipe2 = new Recipe("Chicken Curry", "Spicy and delicious", curryIngredients, glasgowLat, glasgowLong, user2);
