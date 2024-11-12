@@ -25,6 +25,7 @@ public class UserController {
     // Endpoint for user sign-up
     @PostMapping("/signup")
     public ResponseEntity<Map<String, String>> registerUser(@RequestBody UserDTO user) {
+        System.out.println("Signing up new user" + user.getUsername());
         boolean isUserCreated = userService.registerUser(user);
         Map<String, String> response = new HashMap<>();
 
