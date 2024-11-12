@@ -9,6 +9,7 @@ const RecipeForm = ({ latitude, longitude, onRecipeSubmit }) => {
         ingredients: '',
         userId: ''
     });
+    const apiUrl = process.env.REACT_APP_API_BASE_URL;
 
     const openForm = () => {
         setIsVisible(true);
