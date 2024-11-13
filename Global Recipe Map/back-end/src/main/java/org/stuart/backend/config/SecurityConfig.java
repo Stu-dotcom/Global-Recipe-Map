@@ -28,7 +28,6 @@ public class SecurityConfig {
                         .requestMatchers("/api/**").permitAll()
                         .anyRequest().authenticated()
                 )
-                .cors(c -> c.configurationSource((corsConfigurationSource())))
                 .csrf(csrf -> csrf.disable())
                 .headers(headers -> headers
                         .frameOptions(frameOptions -> frameOptions.sameOrigin())
@@ -37,30 +36,4 @@ public class SecurityConfig {
         return http.build();
     }
 
-    @Bean
-    public CorsConfigurationSource corsConfigurationSource() {
-        CorsConfiguration config = new CorsConfiguration();
-        config.setAllowedOrigins(Arrays.asList("https://global-recipe-map-1.onrender.com", "http://localhost:3000"));
-        config.setAllowedMethods(Arrays.asList("GET", "POST", "PUT", "DELETE", "OPTIONS"));
-        UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
-        source.registerCorsConfiguration("/**", config);
-        return source;
-    }
-
-    @Bean
-    public WebMvcConfigurer corsConfig() {
-        return new WebMvcConfigurer() {
-            @Override
-            public void addCorsMappings(CorsRegistry registry) {
-                registry.addMapping("/**")
-                        .allowedOrigins("http://localhost:4200")
-                        .allowedMethods(HttpMethod.GET.name(),
-                                HttpMethod.POST.name(),
-                                HttpMethod.PUT.name(),
-                                HttpMethod.DELETE.name())
-                        .allowedHeaders(HttpHeaders.CONTENT_TYPE,
-                                HttpHeaders.AUTHORIZATION);
-            }
-        };
-    }
 }
