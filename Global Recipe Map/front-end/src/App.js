@@ -9,9 +9,6 @@ function App() {
         setIsAuthenticated(true);
     };
 
-    const cors = require("cors");
-    app.use(cors());
-
     return (
         <div>
             {isAuthenticated ? (
