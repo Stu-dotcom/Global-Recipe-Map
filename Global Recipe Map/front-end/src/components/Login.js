@@ -14,6 +14,10 @@ const Login = ({ onLoginSuccess }) => {
         setError(null);
     };
 
+    const headers = {'Content-Type':'application/json',
+        'Access-Control-Allow-Origin':'*',
+        'Access-Control-Allow-Headers':'Origin, X-Requested-With, Content-Type, Accept'}
+
     const handleSubmit = async (e) => {
         e.preventDefault();
 
@@ -24,10 +28,7 @@ const Login = ({ onLoginSuccess }) => {
         try {
             const response = await fetch(url, {
                 method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                },
-                mode: 'cors',
+                headers: headers,
                 body: JSON.stringify({ username, password }),
             });
 
