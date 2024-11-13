@@ -13,6 +13,7 @@ import java.util.Optional;
 
 @RestController
 @RequestMapping("/api")
+@CrossOrigin
 public class UserController {
 
     private final UserService userService;
@@ -23,7 +24,6 @@ public class UserController {
     }
 
     // Endpoint for user sign-up
-    @CrossOrigin
     @PostMapping("/signup")
     public ResponseEntity<Map<String, String>> registerUser(@RequestBody UserDTO user) {
         System.out.println("Signing up new user" + user.getUsername());
@@ -40,7 +40,6 @@ public class UserController {
     }
 
     // Endpoint for user login
-    @CrossOrigin
     @PostMapping("/login")
     public ResponseEntity<Map<String, String>> loginUser(@RequestBody UserDTO user) {
         Optional<String> token = userService.authenticateUser(user);
