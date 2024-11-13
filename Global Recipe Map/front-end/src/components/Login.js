@@ -27,6 +27,7 @@ const Login = ({ onLoginSuccess }) => {
                 headers: {
                     'Content-Type': 'application/json',
                 },
+                mode: 'cors',
                 body: JSON.stringify({ username, password }),
             });
 
